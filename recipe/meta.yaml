@@ -2,6 +2,7 @@
 {% set version = "4.1.1" %}
 {% set bundle = "tar.gz" %}
 {% set hash = "8a70157dacbbbc11290c18cb3453f0c8ab1dba742572d247a06f4bb519a16472" %}
+{% set python_min = "3.11" %}
 
 package:
   name: {{ name|lower }}
@@ -14,26 +15,23 @@ source:
 build:
   number: 0
   script: {{ PYTHON }} -m pip install . -vv
+  noarch: python
 
 requirements:
-  build:
-    - python                                 # [build_platform != target_platform]
-    - cross-python_{{ target_platform }}     # [build_platform != target_platform]
+
   host:
-    - python
+    - python {{ python_min }}
     - pip
     - setuptools_scm
     - setuptools
+    - build
 
   run:
-    - python
-    - setuptools
-    - pyperclip >=1.6
-    - pyreadline3  # [win]
-    - wcwidth >=0.1.7
-    - gnureadline  # [osx]
-    - rich-argparse >=1.7.1
-    - backports.strenum  # [py==310]
+    - python >={{ python_min }}
+    - prompt-toolkit >=3.0.52
+    - pyperclip >=1.8.2
+    - rich >=15.0.0
+    - rich-argparse >=1.7.2
 
 test:
   imports:
